@@ -9,6 +9,7 @@ import NotFound from './Pages/NotFound';
 import { auth } from './firebase';
 import { useDispatch, useSelector } from 'react-redux'
 import { login, logout, selectUser } from "./features/UserSlice"
+import MoviePage from './Pages/MoviePage';
 
 function App() {
   const user = useSelector(selectUser);
@@ -39,6 +40,7 @@ function App() {
               <Route exact path="/" element={<Home/>}/>
               <Route exact path='/profile' element={<Profile/>}/>
               <Route exact path='/checkout' element={<Paypal/>}/>
+              <Route exact path='/about/:id' element={<MoviePage/>}/>
               <Route path="*" element={<NotFound/>}/>
             </Routes>
           )

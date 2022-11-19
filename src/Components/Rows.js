@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@mui/styles';
 import { Typography } from '@mui/material';
 import instance from '../axios';
+import { useNavigate } from 'react-router';
 
 const Rows = ({title, fetchUrl, isLargeRow}) => {
+  const navigate = useNavigate();  
   const classes = useStyles();
   const [movies, setMovies] = useState([]);
 
@@ -37,6 +39,7 @@ const Rows = ({title, fetchUrl, isLargeRow}) => {
                   key={movie.id}
                   src={`${base_url}${isLargeRow?movie.poster_path:movie?.backdrop_path}`}
                   alt={movie?.name}
+                  onClick={()=> navigate(`/about/${movie?.id}`,{state: movie})}
                 />
               )
             )

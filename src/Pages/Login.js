@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import logo from "../Images/Logo.png";
-import HeroBanner from "../Images/HeroBanner.png";
+// import HeroBanner from "../Images/HeroBanner.png";
+import forestWP from "../Images/forestWP.jpg";
 import { Typography } from '@mui/material';
 import { NetflixButton, NetflixInput } from '../Styled/styledcomponents';
 import SignUp from './SignUp';
@@ -12,9 +13,9 @@ const Login = () => {
   return (
       <div className={classes.contenedor}>
         <img src={logo} alt="logo" className={classes.logo}/>
-        <NetflixButton className={classes.session} radius="true">
+        {/* <NetflixButton className={classes.session} radius="true">
           Iniciar Sesion
-        </NetflixButton>
+        </NetflixButton> */}
         <div className={classes.info}>
           {
             !signIn ? (<SignUp/>) : (
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   contenedor: {
     position: "relative",
     height: "100vh",
-    backgroundImage: `url(${HeroBanner})`,
+    backgroundImage: `url(${forestWP})`,
     objectFit: "contain",
     backgroundSize: "cover",
     backgroundPosition: "center",

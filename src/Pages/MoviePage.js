@@ -6,7 +6,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import ReactPlayer from "react-player";
 import {selectMovie} from '../trailers'
-
+import YouTube from "react-youtube";
 
 const MoviePage = () => {
   const classes = useStyles();
@@ -20,40 +20,18 @@ const MoviePage = () => {
   const URL_IMAGE = "https://image.tmdb.org/t/p/original";
 
   // variables de estado
-  const [movies, setMovies] = useState([]);
-  const [searchKey, setSearchKey] = useState("");
+
   //const [selectedMovie, setSelectedMovie] = useState({})
   const [trailer, setTrailer] = useState(null);
   const [Movie, setMovie] = useState({ title: "Loading Movies" });
   const [playing, setPlaying] = useState(false);
 
-  const [movieName, setMovieName] = React.useState(
-    movie?.title || movie?.name || movie?.original_name
-  );
 
-  const fetchMovies = async (searchKey) => {
-    const type = searchKey ? "search" : "discover";
-    const {
-      data: { results },
-    } = await axios.get(`${API_URL}/${type}/movie`, {
-      params: {
-        api_key: API_KEY,
-        query: searchKey,
-      },
-    });
-    //console.log('data',results);
-    //setSelectedMovie(results[0])
 
-    setMovies(results);
-    setMovie(results[0]);
 
-    if (results.length) {
-      await fetchMovie(results[0].id);
-    }
-  };
 
-  const fetchMovie = async (id) => {
-    const { data } = await axios.get(`${API_URL}/movie/${id}`, {
+  const fetchMovie = async() =>{
+    const { data } = await axios.get(`${API_URL}/movie/${movie.id}`, {
       params: {
         api_key: API_KEY,
         append_to_response: "videos",
@@ -68,17 +46,13 @@ const MoviePage = () => {
     }
     //return data
     setMovie(data);
-  };
+  }
 
-  const selectMovie = async (movie) => {
-    // const data = await fetchMovie(movie.id)
-    // console.log(data);
-    // setSelectedMovie(movie)
-    fetchMovie(movie.id);
+useEffect(()=>{
+  fetchMovie()
+},[])
 
-    setMovie(movie);
-    window.scrollTo(0, 0);
-  };
+
 
   console.log(movie);
 
@@ -86,6 +60,8 @@ const MoviePage = () => {
     string?.length > n ? `${string.substr(0, n - 1)}...` : string;
 
   return (
+    <>
+    
     <div
       class={classes.banner}
       style={{
@@ -114,6 +90,65 @@ const MoviePage = () => {
 
       
     </div>
+    <main>
+          {Movie ? (
+            <div
+              className="viewtrailer"
+              style={{
+                backgroundImage: `url("${IMAGE_PATH}${Movie.backdrop_path}")`,
+              }}
+            >
+              {playing ? (
+                <>
+                  <YouTube
+                    videoId={trailer.key}
+                    className="reproductor container"
+                    containerClassName={"youtube-container amru"}
+                    opts={{
+                      width: "100%",
+                      height: "100%",
+                      playerVars: {
+                        autoplay: 1,
+                        controls: 0,
+                        cc_load_policy: 0,
+                        fs: 0,
+                        iv_load_policy: 0,
+                        modestbranding: 0,
+                        rel: 0,
+                        showinfo: 0,
+                      },
+                    }}
+                  />
+                  <button onClick={() => setPlaying(false)} className="boton">
+                    Close
+                  </button>
+                </>
+              ) : (
+                <div className="container">
+                  <div className="">
+                    {trailer ? (
+                      <button
+                        className="boton"
+                        onClick={() => setPlaying(true)}
+                        type="button"
+                      >
+                        Play Trailer
+                      </button>
+                    ) : (
+                      "Sorry, no trailer available"
+                    )}
+                    <h1 className="text-white">{Movie.title}</h1>
+                    <p className="text-white">{Movie.overview}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : null}
+        </main>
+    </>
+    
+
+    
   );
 };
 

@@ -1,46 +1,47 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@mui/styles';
-import logo from "../Images/Logo.png";
+import React, { useState } from "react";
+import { makeStyles } from "@mui/styles";
+// import logo from "../Images/Logo.png";
 // import HeroBanner from "../Images/HeroBanner.png";
 import forestWP from "../Images/forestWP.jpg";
-import { Typography } from '@mui/material';
-import { NetflixButton, NetflixInput } from '../Styled/styledcomponents';
-import SignUp from './SignUp';
+import { Typography } from "@mui/material";
+import { NetflixButton, NetflixInput } from "../Styled/styledcomponents";
+import SignUp from "./SignUp";
 
 const Login = () => {
   const classes = useStyles();
   const [signIn, setSignIn] = useState(false);
   return (
-      <div className={classes.contenedor}>
-        <img src={logo} alt="logo" className={classes.logo}/>
-        {/* <NetflixButton className={classes.session} radius="true">
+    <div className={classes.contenedor}>
+      {/* <img src={logo} alt="logo" className={classes.logo}/> */}
+
+      {/* <NetflixButton className={classes.session} radius="true">
           Iniciar Sesion
         </NetflixButton> */}
-        <div className={classes.info}>
-          {
-            !signIn ? (<SignUp/>) : (
-              <>
-                <Typography variant='h4'gutterBottom>
-                  Unlimited films,TV programmes and more.
-                </Typography>
-                <Typography variant='h5'>
-                  Watch anywhere.Cancel at any time.      
-                </Typography>
-                <Typography variant='h6'>
-                  Ready to watch ? Enter your email to create or restart your
-                  membership.
-                </Typography>
-                <div className={classes.inputBlock}>
-                  <NetflixInput placeholder='Email address'/>
-                  <NetflixButton style={{top: 2}}>GET STARTED</NetflixButton>
-                </div>
-              </>
-            )
-          }
-        </div>
+      <div className={classes.info}>
+        {!signIn ? (
+          <SignUp />
+        ) : (
+          <>
+            <Typography variant="h4" gutterBottom>
+              Unlimited films,TV programmes and more.
+            </Typography>
+            <Typography variant="h5">
+              Watch anywhere.Cancel at any time.
+            </Typography>
+            <Typography variant="h6">
+              Ready to watch ? Enter your email to create or restart your
+              membership.
+            </Typography>
+            <div className={classes.inputBlock}>
+              <NetflixInput placeholder="Email address" />
+              <NetflixButton style={{ top: 2 }}>GET STARTED</NetflixButton>
+            </div>
+          </>
+        )}
       </div>
-  )
-}
+    </div>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   contenedor: {
@@ -59,16 +60,16 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     top: 0,
     left: 20,
-    width:"150px",
+    width: "150px",
     cursor: "pointer",
   },
-  session:{
+  session: {
     position: "fixed",
     zIndex: 15,
     right: 20,
     top: 20,
   },
-  info:{
+  info: {
     color: "#fff",
     zIndex: 15,
     textAlign: "center",
@@ -79,9 +80,9 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: 400,
     },
   },
-  inputBlock:{
-    marginTop:"9px",
-  }
+  inputBlock: {
+    marginTop: "9px",
+  },
 }));
 
-export default Login
+export default Login;

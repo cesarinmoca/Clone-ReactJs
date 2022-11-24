@@ -22,9 +22,9 @@ const handleWidth = (wide) => {
 };
 
 export const NetflixButton = styled.button`
-  background-color: ${({ color }) => (color === "gray" ? "lightgray" : "red")};
+  background-color: ${({ color }) => (color === "gray" ? "#202020" : "#000")};
   z-index: 15;
-  color: #fff;
+  color: #00FFFF;
   border-radius: ${({ radius }) => (radius ? "10px" : null)};
   text-transform: inherit;
   padding: 15px;
@@ -35,6 +35,6 @@ export const NetflixButton = styled.button`
   width: ${({ wide }) => handleWidth(wide)};
   &:hover {
     color: #000;
-    background-color: #e6e6e6;
+    background-color: #00CCCC;
   }
 `;

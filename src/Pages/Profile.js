@@ -2,7 +2,8 @@ import { Typography } from "@mui/material";
 import React from "react";
 import Header from "../Components/Header";
 import { makeStyles } from "@mui/styles";
-import avatar from "../Images/NetflixProfile.jpg";
+// import avatar from "../Images/NetflixProfile.jpg";
+import user from "../Images/user.png";
 import Plans from "../Components/Plans";
 import { NetflixButton } from "../Styled/styledcomponents";
 import { auth } from "../firebase";
@@ -22,10 +23,9 @@ const Profile = () => {
       <Header />
       <div className={classes.contenedor}>
         <Typography style={{ marginBottom: "10px" }} variant="h3">
-          Profile
+          Informacion del usuario
         </Typography>
         <div className={classes.info}>
-          <img src={avatar} alt="avatar" />
           <div className={classes.details}>
             <div className={classes.plans}>
               <Typography className={classes.user} variant="h6">
@@ -37,16 +37,70 @@ const Profile = () => {
                 gutterBottom
               >
                 {" "}
-                Plans
+                Perfil
               </Typography>
-              <Plans cost={7.99}>Netflix Standard</Plans>
+              <div className={classes.infoContainer}>
+                <img src={user} alt="avatar" />
+                <div className={classes.infoContRow}>
+                  <Typography
+                    className={classes.infoUser}
+                    variant="h5"
+                    gutterBottom
+                  >
+                    {" "}
+                    Nombre de usuario
+                  </Typography>
+                  <Typography
+                    className={classes.infoUser}
+                    variant="h5"
+                    gutterBottom
+                  >
+                    {" "}
+                    Contraseña
+                  </Typography>
+                </div>
+              </div>
+              {/* <Plans cost={7.99}>Netflix Standard</Plans>
               <Plans cost={11.99}>Netflix Basic</Plans>
               <Plans wide="medium" color="gray" cost={15.99}>
                 Netflix Premium
-              </Plans>
+              </Plans> */}
               <NetflixButton radius wide="fullWidth" onClick={signout}>
                 Sign Out
               </NetflixButton>
+
+
+
+
+              <Typography
+                className={classes.plansText}
+                variant="h5"
+                gutterBottom
+              >
+                {" "}
+                Aqui va el cum
+              </Typography>
+              <div className={classes.infoContainer}>
+                <img src={user} alt="avatar" />
+                <div className={classes.infoContRow}>
+                  <Typography
+                    className={classes.infoUser}
+                    variant="h5"
+                    gutterBottom
+                  >
+                    {" "}
+                    Aqui va el cum
+                  </Typography>
+                  <Typography
+                    className={classes.infoUser}
+                    variant="h5"
+                    gutterBottom
+                  >
+                    {" "}
+                    Aqui va el cum
+                  </Typography>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -94,6 +148,17 @@ const useStyles = makeStyles((theme) => ({
   plansText: {
     borderBottom: "1px solid lightgray",
   },
+  infoContainer: {
+    display: "flex",
+    flexDirection: "row",
+    margin: "20px 0px 20px 40px",
+  },
+  infoContRow: {
+    display: "flex",
+    flexDirection: "column",
+    marginLeft: "80px",
+  },
+  infoUser: {},
 }));
 
 export default Profile;

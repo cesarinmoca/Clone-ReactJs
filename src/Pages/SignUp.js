@@ -5,6 +5,7 @@ import { Typography } from "@mui/material";
 import { NetflixButton, NetflixInput } from "../Styled/styledcomponents";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router";
+import owl from "../Images/owl.png"
 
 const SignUp = () => {
   const classes = useStyles();
@@ -31,6 +32,7 @@ const SignUp = () => {
   return (
     <>
       <div className={classes.contenedor}>
+        <img src={owl} alt="logo" className={classes.logo}/>
         <Typography variant="h5" align="left">
           Inicio de sesion
         </Typography>
@@ -57,8 +59,8 @@ const SignUp = () => {
           >
             Acceder
           </NetflixButton>
+          <Typography variant="subtitle2">¿Nuevo en CyberStream?</Typography>
           <Typography variant="subtitle2">
-            Nuevo en CyberStream ?
             <span className={classes.signupLink} onClick={register}>
               Registrate ahora{" "}
             </span>
@@ -72,8 +74,8 @@ const SignUp = () => {
 const useStyles = makeStyles((theme) => ({
   contenedor: {
     maxWidth: "350px",
-    width: "20rem",
-    height: "25rem",
+    width: "23rem",
+    height: "30rem",
     background: "rgba(0,0,0,0.65)",
     display: "flex",
     flexDirection: "column",
@@ -83,6 +85,10 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: "80%",
+  },
+  logo: {
+    height: "5rem",
+    width: "5rem",
   },
   email: {
     marginBottom: theme.spacing(2),

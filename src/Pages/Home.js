@@ -9,7 +9,7 @@ const Home = () => {
     <div>
         <Header/>
         <Banner/>
-        <Rows title='NETFLIX ORIGINALS' fetchUrl={requests.fetchNetflixOriginals} isLargeRow/>
+        {/* <Rows title='NETFLIX ORIGINALS' fetchUrl={requests.fetchNetflixOriginals} isLargeRow/> */}
         <Rows title='Top Rated' fetchUrl={requests.fetchTopRated}/>
         <Rows title='Trending' fetchUrl={requests.fetchTrending}/>
         <Rows title='Action Movies' fetchUrl={requests.fetchActionMovies}/>

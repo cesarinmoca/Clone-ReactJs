@@ -28,7 +28,7 @@ const Header = () => {
     <AppBar elevation={0} class={`${"barra"} ${show && "transparent"}`}>
       <Toolbar className={classes.toolbar}>
         <IconButton onClick={()=>navigate('/')}>
-          <img src={logo} alt="logo" className={classes.logo}/>
+          {/* <img src={logo} alt="logo" className={classes.logo}/> */}
         </IconButton>
         <Avatar variant="square" style={{cursor: "pointer"}}
           onClick={()=>navigate('/profile')}

@@ -9,19 +9,20 @@ const Rows = ({title, fetchUrl, isLargeRow}) => {
   const classes = useStyles();
   const [movies, setMovies] = useState([]);
 
-  const base_url = "https://image.tmdb.org/t/p/original/";
+
+  const API_KEY = "52abd33f37ed4adae2df8ac3891c2bbb";
 
   useEffect(() => { 
     const fetchData = async () => {
       const request = await instance.get(fetchUrl)
       setMovies(request.data.results)
-      console.log(request)
+      
       return request
     };
     fetchData();
   }, [fetchUrl])
 
-  console.log(movies)
+console.log("movies",movies)
 
   return (
     <>
@@ -37,7 +38,7 @@ const Rows = ({title, fetchUrl, isLargeRow}) => {
                     isLargeRow && classes.posterLarge
                   }`}
                   key={movie.id}
-                  src={`${base_url}${isLargeRow?movie.poster_path:movie?.backdrop_path}`}
+                  src={`https://image.tmdb.org/t/p/original${isLargeRow?movie.poster_path:movie?.backdrop_path}?api_key=${API_KEY}`}
                   alt={movie?.name}
                   onClick={()=> navigate(`/about/${movie?.id}`,{state: movie})}
                 />

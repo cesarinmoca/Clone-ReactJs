@@ -4,26 +4,21 @@ import { makeStyles } from "@mui/styles";
 import { Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
-import ReactPlayer from "react-player";
-import {selectMovie} from '../trailers'
 import YouTube from "react-youtube";
 
 const MoviePage = () => {
   const classes = useStyles();
   const { state: movie } = useLocation();
+  console.log("MOVIEEEEEEEEEEE:::::::::::",movie)
 
   const API_URL = "https://api.themoviedb.org/3";
   const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
-  const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
-
   // endpoint para las imagenes
-  const URL_IMAGE = "https://image.tmdb.org/t/p/original";
 
   // variables de estado
 
   //const [selectedMovie, setSelectedMovie] = useState({})
   const [trailer, setTrailer] = useState(null);
-  const [Movie, setMovie] = useState({ title: "Loading Movies" });
   const [playing, setPlaying] = useState(false);
 
 
@@ -45,7 +40,7 @@ const MoviePage = () => {
       setTrailer(trailer ? trailer : data.videos.results[0]);
     }
     //return data
-    setMovie(data);
+ 
   }
 
 useEffect(()=>{
@@ -73,9 +68,8 @@ useEffect(()=>{
           {movie?.title || movie?.name || movie?.original_name}
         </Typography>
         <div className={classes.buttons}>
-        <Button onClick={()=> {
-            window.open(`https://www.youtube.com/results?search_query=${movie?.original_name}+movie`, "_blank")
-          }}>Play</Button>
+          {trailer && ( <Button onClick={()=>  setPlaying(!playing)}>{playing ?"Stop playing" :"Show trailer"}</Button>)}
+       
           <Button>My List</Button>
         </div>
         <Typography
@@ -91,11 +85,13 @@ useEffect(()=>{
       
     </div>
     <main>
-          {Movie ? (
+          {movie ? (
             <div
               className="viewtrailer"
               style={{
-                backgroundImage: `url("${IMAGE_PATH}${Movie.backdrop_path}")`,
+                display:"flex",
+                justifyContent:"center",
+                alignItems:'center'
               }}
             >
               {playing ? (
@@ -104,6 +100,10 @@ useEffect(()=>{
                     videoId={trailer.key}
                     className="reproductor container"
                     containerClassName={"youtube-container amru"}
+                    style={{
+                      width:"50%",
+                      height: "500px"
+                    }}
                     opts={{
                       width: "100%",
                       height: "100%",
@@ -119,26 +119,19 @@ useEffect(()=>{
                       },
                     }}
                   />
-                  <button onClick={() => setPlaying(false)} className="boton">
-                    Close
-                  </button>
+                
                 </>
               ) : (
                 <div className="container">
                   <div className="">
                     {trailer ? (
-                      <button
-                        className="boton"
-                        onClick={() => setPlaying(true)}
-                        type="button"
-                      >
-                        Play Trailer
-                      </button>
+                     null
                     ) : (
-                      "Sorry, no trailer available"
+                     <h1 style={{
+                      color:"white"
+                     }}>"Una disculpa, No se pudo encontrar un trailer"</h1> 
                     )}
-                    <h1 className="text-white">{Movie.title}</h1>
-                    <p className="text-white">{Movie.overview}</p>
+                   
                   </div>
                 </div>
               )}

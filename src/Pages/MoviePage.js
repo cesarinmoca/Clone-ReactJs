@@ -1,18 +1,89 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useParams } from "react-router";
 import { makeStyles } from "@mui/styles";
 import { Button, Typography } from "@mui/material";
+import axios from "axios";
+import { useEffect } from "react";
+import ReactPlayer from "react-player";
+import {selectMovie} from '../trailers'
+
+
 const MoviePage = () => {
   const classes = useStyles();
   const { state: movie } = useLocation();
 
-  const [movieName, setMovieName] = React.useState(movie?.title || movie?.name || movie?.original_name);
-  console.log(movie);
+  const API_URL = "https://api.themoviedb.org/3";
+  const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
+  const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
 
+  // endpoint para las imagenes
+  const URL_IMAGE = "https://image.tmdb.org/t/p/original";
+
+  // variables de estado
+  const [movies, setMovies] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+  //const [selectedMovie, setSelectedMovie] = useState({})
+  const [trailer, setTrailer] = useState(null);
+  const [Movie, setMovie] = useState({ title: "Loading Movies" });
+  const [playing, setPlaying] = useState(false);
+
+  const [movieName, setMovieName] = React.useState(
+    movie?.title || movie?.name || movie?.original_name
+  );
+
+  const fetchMovies = async (searchKey) => {
+    const type = searchKey ? "search" : "discover";
+    const {
+      data: { results },
+    } = await axios.get(`${API_URL}/${type}/movie`, {
+      params: {
+        api_key: API_KEY,
+        query: searchKey,
+      },
+    });
+    //console.log('data',results);
+    //setSelectedMovie(results[0])
+
+    setMovies(results);
+    setMovie(results[0]);
+
+    if (results.length) {
+      await fetchMovie(results[0].id);
+    }
+  };
+
+  const fetchMovie = async (id) => {
+    const { data } = await axios.get(`${API_URL}/movie/${id}`, {
+      params: {
+        api_key: API_KEY,
+        append_to_response: "videos",
+      },
+    });
+
+    if (data.videos && data.videos.results) {
+      const trailer = data.videos.results.find(
+        (vid) => vid.name === "Official Trailer"
+      );
+      setTrailer(trailer ? trailer : data.videos.results[0]);
+    }
+    //return data
+    setMovie(data);
+  };
+
+  const selectMovie = async (movie) => {
+    // const data = await fetchMovie(movie.id)
+    // console.log(data);
+    // setSelectedMovie(movie)
+    fetchMovie(movie.id);
+
+    setMovie(movie);
+    window.scrollTo(0, 0);
+  };
+
+  console.log(movie);
 
   const truncate = (string, n) =>
     string?.length > n ? `${string.substr(0, n - 1)}...` : string;
-
 
   return (
     <div
@@ -26,7 +97,7 @@ const MoviePage = () => {
           {movie?.title || movie?.name || movie?.original_name}
         </Typography>
         <div className={classes.buttons}>
-          <Button onClick={()=> {
+        <Button onClick={()=> {
             window.open(`https://www.youtube.com/results?search_query=${movie?.original_name}+movie`, "_blank")
           }}>Play</Button>
           <Button>My List</Button>
@@ -40,7 +111,8 @@ const MoviePage = () => {
         </Typography>
         <div className={classes.fadebottom}></div>
       </div>
-     
+
+      
     </div>
   );
 };

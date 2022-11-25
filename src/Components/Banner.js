@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { makeStyles } from "@mui/styles";
 import { Button, Typography } from "@mui/material";
 import requests from "../Request";
 import instance from "../axios";
 
 const Banner = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const [movie, setMovie] = useState([]);
   const truncate = (string, n) =>
@@ -12,7 +14,7 @@ const Banner = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const request = await instance.get(requests.fetchNetflixOriginals);
+      const request = await instance.get(requests.fetchTrending);
       const random = Math.floor(
         Math.random() * request.data.results.length - 1
       );
@@ -22,7 +24,7 @@ const Banner = () => {
     fetchData();
   }, []);
 
-  console.log(movie);
+
 
   return (
     <div
@@ -36,7 +38,7 @@ const Banner = () => {
           {movie?.title || movie?.name || movie?.original_name}
         </Typography>
         <div className={classes.buttons}>
-          <Button>Play</Button>
+          <Button onClick={()=> navigate(`/about/${movie?.id}`,{state: movie})}>Play</Button>
           <Button>My List</Button>
         </div>
         <Typography

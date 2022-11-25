@@ -69,9 +69,6 @@ const Profile = () => {
                 Sign Out
               </NetflixButton>
 
-
-
-
               <Typography
                 className={classes.plansText}
                 variant="h5"

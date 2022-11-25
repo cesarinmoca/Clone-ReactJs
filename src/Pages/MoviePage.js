@@ -9,7 +9,7 @@ import YouTube from "react-youtube";
 const MoviePage = () => {
   const classes = useStyles();
   const { state: movie } = useLocation();
-  console.log("MOVIEEEEEEEEEEE:::::::::::",movie)
+  console.log("MOVIEEEEEEEEEEE:::::::::::", movie);
 
   const API_URL = "https://api.themoviedb.org/3";
   const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
@@ -21,11 +21,7 @@ const MoviePage = () => {
   const [trailer, setTrailer] = useState(null);
   const [playing, setPlaying] = useState(false);
 
-
-
-
-
-  const fetchMovie = async() =>{
+  const fetchMovie = async () => {
     const { data } = await axios.get(`${API_URL}/movie/${movie.id}`, {
       params: {
         api_key: API_KEY,
@@ -40,14 +36,11 @@ const MoviePage = () => {
       setTrailer(trailer ? trailer : data.videos.results[0]);
     }
     //return data
- 
-  }
+  };
 
-useEffect(()=>{
-  fetchMovie()
-},[])
-
-
+  useEffect(() => {
+    fetchMovie();
+  }, []);
 
   console.log(movie);
 
@@ -56,92 +49,90 @@ useEffect(()=>{
 
   return (
     <>
-    
-    <div
-      class={classes.banner}
-      style={{
-        backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
-      }}
-    >
-      <div className={classes.content}>
-        <Typography variant="h2" component="h1">
-          {movie?.title || movie?.name || movie?.original_name}
-        </Typography>
-        <div className={classes.buttons}>
-          {trailer && ( <Button onClick={()=>  setPlaying(!playing)}>{playing ?"Stop playing" :"Show trailer"}</Button>)}
-       
-          <Button>My List</Button>
+      <div
+        class={classes.banner}
+        style={{
+          backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
+        }}
+      >
+        <div className={classes.content}>
+          <Typography variant="h2" component="h1">
+            {movie?.title || movie?.name || movie?.original_name}
+          </Typography>
+          <div className={classes.buttons}>
+            {trailer && (
+              <Button onClick={() => setPlaying(!playing)}>
+                {playing ? "Stop playing" : "Show trailer"}
+              </Button>
+            )}
+
+            <Button>My List</Button>
+          </div>
+          <Typography
+            style={{ wordWrap: "break-word" }}
+            variant="h6"
+            className={classes.descripcion}
+          >
+            {truncate(movie?.overview, 160)}
+          </Typography>
+          <div className={classes.fadebottom}></div>
         </div>
-        <Typography
-          style={{ wordWrap: "break-word" }}
-          variant="h6"
-          className={classes.descripcion}
-        >
-          {truncate(movie?.overview, 160)}
-        </Typography>
-        <div className={classes.fadebottom}></div>
       </div>
-
-      
-    </div>
-    <main>
-          {movie ? (
-            <div
-              className="viewtrailer"
-              style={{
-                display:"flex",
-                justifyContent:"center",
-                alignItems:'center'
-              }}
-            >
-              {playing ? (
-                <>
-                  <YouTube
-                    videoId={trailer.key}
-                    className="reproductor container"
-                    containerClassName={"youtube-container amru"}
-                    style={{
-                      width:"50%",
-                      height: "500px"
-                    }}
-                    opts={{
-                      width: "100%",
-                      height: "100%",
-                      playerVars: {
-                        autoplay: 1,
-                        controls: 0,
-                        cc_load_policy: 0,
-                        fs: 0,
-                        iv_load_policy: 0,
-                        modestbranding: 0,
-                        rel: 0,
-                        showinfo: 0,
-                      },
-                    }}
-                  />
-                
-                </>
-              ) : (
-                <div className="container">
-                  <div className="">
-                    {trailer ? (
-                     null
-                    ) : (
-                     <h1 style={{
-                      color:"white"
-                     }}>"Una disculpa, No se pudo encontrar un trailer"</h1> 
-                    )}
-                   
-                  </div>
+      <main>
+        {movie ? (
+          <div
+            className="viewtrailer"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {playing ? (
+              <>
+                <YouTube
+                  videoId={trailer.key}
+                  className="reproductor container"
+                  containerClassName={"youtube-container amru"}
+                  style={{
+                    width: "50%",
+                    height: "500px",
+                  }}
+                  opts={{
+                    width: "100%",
+                    height: "100%",
+                    playerVars: {
+                      autoplay: 1,
+                      controls: 0,
+                      cc_load_policy: 0,
+                      fs: 0,
+                      iv_load_policy: 0,
+                      modestbranding: 0,
+                      rel: 0,
+                      showinfo: 0,
+                    },
+                  }}
+                />
+              </>
+            ) : (
+              <div className="container">
+                <div className="">
+                  {trailer ? null : (
+                    <h1
+                      style={{
+                        color: "white",
+                      }}
+                    >
+                      "Una disculpa, No se pudo encontrar un trailer"
+                    </h1>
+                  )}
                 </div>
-              )}
-            </div>
-          ) : null}
-        </main>
+              </div>
+            )}
+          </div>
+        ) : null}
+      </main>
     </>
-    
-
-    
   );
 };
 

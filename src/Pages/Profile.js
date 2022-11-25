@@ -65,14 +65,14 @@ const Profile = () => {
                 Cerrar sesión
               </NetflixButton>
 
-              <div>
+              {/* <div>
                 <Typography
                   style={{ marginBottom: "10px", marginTop: "20px" }}
                   variant="h3"
                 >
                   Peliculas favoritas
                 </Typography>
-              </div>
+              </div> */}
 
               {/* <Typography
                 className={classes.plansText}

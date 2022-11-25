@@ -3,9 +3,10 @@ import { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
 import { NetflixButton, NetflixInput } from "../Styled/styledcomponents";
-import { auth } from "../firebase";
+import { auth, firestore } from "../firebase";
+import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router";
-import owl from "../Images/owl.png"
+import owl from "../Images/owl.png";
 
 const SignUp = () => {
   const classes = useStyles();
@@ -21,18 +22,25 @@ const SignUp = () => {
       .catch((err) => alert(err.message));
   };
 
-  const register = (e) => {
+  const register = async (e) => {
     e.preventDefault();
-    auth
+
+    await auth
       .createUserWithEmailAndPassword(email, password)
-      .then((authUser) => navigate("/"))
+      .then((authUser) =>
+        addDoc(collection(firestore, "users"), {
+          email: email,
+          uid: authUser.user.uid,
+        })
+      )
+      .finally(() => navigate("/"))
       .catch((err) => alert(err.message));
   };
 
   return (
     <>
       <div className={classes.contenedor}>
-        <img src={owl} alt="logo" className={classes.logo}/>
+        <img src={owl} alt="logo" className={classes.logo} />
         <Typography variant="h5" align="left">
           Inicio de sesion
         </Typography>

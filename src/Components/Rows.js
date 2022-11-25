@@ -1,55 +1,63 @@
-import React, { useEffect, useState } from 'react'
-import { makeStyles } from '@mui/styles';
-import { Typography } from '@mui/material';
-import instance from '../axios';
-import { useNavigate } from 'react-router';
+import React, { useEffect, useState } from "react";
+import { makeStyles } from "@mui/styles";
+import { Skeleton, Typography } from "@mui/material";
+import instance from "../axios";
+import { useNavigate } from "react-router";
 
-const Rows = ({title, fetchUrl, isLargeRow}) => {
-  const navigate = useNavigate();  
+const Rows = ({ title, fetchUrl, isLargeRow }) => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const [movies, setMovies] = useState([]);
 
-
   const API_KEY = "52abd33f37ed4adae2df8ac3891c2bbb";
 
-  useEffect(() => { 
+  useEffect(() => {
     const fetchData = async () => {
-      const request = await instance.get(fetchUrl)
-      setMovies(request.data.results)
-      
-      return request
+      const request = await instance.get(fetchUrl);
+      setMovies(request.data.results);
+
+      return request;
     };
     fetchData();
-  }, [fetchUrl])
+  }, [fetchUrl]);
 
-console.log("movies",movies)
+  if (movies === []) {
+    return <Skeleton variant="rectangular" width={210} height={118} />;
+  }
 
   return (
     <>
+      {/* <Skeleton variant="rectangular" width={210} height={118} /> */}
       <div className={classes.contenedor}>
-        <Typography variant='h4'>{title}</Typography>
+        <Typography variant="h4">{title}</Typography>
         <div className={classes.posters}>
           {movies.map(
-            (movie)=> 
-              ((isLargeRow && movie.poster_path) || 
-                (!isLargeRow && movie.backdrop_path)) && (
-                <img 
+            (movie) =>
+              ((isLargeRow && movie.poster_path) ||
+                (!isLargeRow && movie.backdrop_path)) &&
+              (!movie ? (
+                <Skeleton variant="rectangular" width={210} height={118} />
+              ) : (
+                <img
                   className={`${classes.poster} ${
                     isLargeRow && classes.posterLarge
                   }`}
                   key={movie.id}
-                  src={`https://image.tmdb.org/t/p/original${isLargeRow?movie.poster_path:movie?.backdrop_path}?api_key=${API_KEY}`}
+                  src={`https://image.tmdb.org/t/p/original${
+                    isLargeRow ? movie.poster_path : movie?.backdrop_path
+                  }?api_key=${API_KEY}`}
                   alt={movie?.name}
-                  onClick={()=> navigate(`/about/${movie?.id}`,{state: movie})}
+                  onClick={() =>
+                    navigate(`/about/${movie?.id}`, { state: movie })
+                  }
                 />
-              )
-            )
-          }
+              ))
+          )}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   contenedor: {
@@ -62,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "scroll",
     "&::-webkit-scrollbar": {
       display: "none",
-    } 
+    },
   },
   poster: {
     maxHeight: "12rem",
@@ -71,8 +79,8 @@ const useStyles = makeStyles((theme) => ({
     transition: "transform 450ms",
     "&:hover": {
       transform: "scale(1.1)",
-    } 
+    },
   },
 }));
 
-export default Rows
+export default Rows;

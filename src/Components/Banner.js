@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { makeStyles } from "@mui/styles";
 import { Button, Typography } from "@mui/material";
+import { auth, firestore } from "../firebase";
+import { collection, addDoc } from "firebase/firestore";
 import requests from "../Request";
 import instance from "../axios";
 
@@ -24,7 +26,16 @@ const Banner = () => {
     fetchData();
   }, []);
 
-
+  const addToMyList = () => {
+    firestore
+      .collection("users")
+      .doc(auth.currentUser.uid)
+      .set({
+        email: auth.currentUser.email,
+        uid: auth.currentUser.uid,
+        myList: [movie],
+      });
+  };
 
   return (
     <div
@@ -38,8 +49,12 @@ const Banner = () => {
           {movie?.title || movie?.name || movie?.original_name}
         </Typography>
         <div className={classes.buttons}>
-          <Button onClick={()=> navigate(`/about/${movie?.id}`,{state: movie})}>Play</Button>
-          <Button>My List</Button>
+          <Button
+            onClick={() => navigate(`/about/${movie?.id}`, { state: movie })}
+          >
+            Play
+          </Button>
+          <Button onClick={() => addToMyList()}>My List</Button>
         </div>
         <Typography
           style={{ wordWrap: "break-word" }}

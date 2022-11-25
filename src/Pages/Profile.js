@@ -28,9 +28,6 @@ const Profile = () => {
         <div className={classes.info}>
           <div className={classes.details}>
             <div className={classes.plans}>
-              <Typography className={classes.user} variant="h6">
-                Usuario de email
-              </Typography>
               <Typography
                 className={classes.plansText}
                 variant="h5"
@@ -47,8 +44,7 @@ const Profile = () => {
                     variant="h5"
                     gutterBottom
                   >
-                    {" "}
-                    Nombre de usuario
+                    Usuario : {auth.currentUser?.email}
                   </Typography>
                   <Typography
                     className={classes.infoUser}
@@ -56,7 +52,7 @@ const Profile = () => {
                     gutterBottom
                   >
                     {" "}
-                    Contraseña
+                    Contraseña: ********
                   </Typography>
                 </div>
               </div>
@@ -66,10 +62,19 @@ const Profile = () => {
                 Netflix Premium
               </Plans> */}
               <NetflixButton radius wide="fullWidth" onClick={signout}>
-                Sign Out
+                Cerrar sesión
               </NetflixButton>
 
-              <Typography
+              <div>
+                <Typography
+                  style={{ marginBottom: "10px", marginTop: "20px" }}
+                  variant="h3"
+                >
+                  Peliculas favoritas
+                </Typography>
+              </div>
+
+              {/* <Typography
                 className={classes.plansText}
                 variant="h5"
                 gutterBottom
@@ -97,7 +102,7 @@ const Profile = () => {
                     Aqui va el cum
                   </Typography>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

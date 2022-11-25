@@ -1,4 +1,4 @@
-import { AppBar, Avatar, IconButton, Toolbar } from "@mui/material";
+import { AppBar, Avatar, IconButton, Toolbar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router";
@@ -27,6 +27,14 @@ const Header = () => {
       <Toolbar className={classes.toolbar}>
         <IconButton onClick={() => navigate("/")}>
           {/* <img src={logo} alt="logo" className={classes.logo}/> */}
+          <Typography
+            variant="h4"
+            style={{
+              color: "white",
+            }}
+          >
+            CyberStream
+          </Typography>
         </IconButton>
         <Avatar
           variant="square"

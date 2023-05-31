@@ -5,6 +5,8 @@ import { Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect } from "react";
 import YouTube from "react-youtube";
+import Rows from "../Components/Rows";
+import requests from "../Request";
 
 const MoviePage = () => {
   const classes = useStyles();
@@ -42,7 +44,7 @@ const MoviePage = () => {
     fetchMovie();
   }, []);
 
-  console.log(movie);
+  console.log(movie.id);
 
   const truncate = (string, n) =>
     string?.length > n ? `${string.substr(0, n - 1)}...` : string;
@@ -132,6 +134,10 @@ const MoviePage = () => {
           </div>
         ) : null}
       </main>
+      <div>
+        {/* Mostrar fila de recomendacion */}
+        <Rows title='Recommendations' fetchUrl={`https://api.themoviedb.org/3/movie/${movie.id}"/recommendations?api_key=52abd33f37ed4adae2df8ac3891c2bbb`}/>
+      </div>
     </>
   );
 };

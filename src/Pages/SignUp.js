@@ -3,8 +3,6 @@ import { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
 import { NetflixButton, NetflixInput } from "../Styled/styledcomponents";
-import { auth, firestore } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router";
 import owl from "../Images/owl.png";
 
@@ -16,25 +14,11 @@ const SignUp = () => {
 
   const signIn = (e) => {
     e.preventDefault();
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((authUser) => navigate("/"))
-      .catch((err) => alert(err.message));
+    navigate("/home");
   };
 
   const register = async (e) => {
     e.preventDefault();
-
-    await auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((authUser) =>
-        addDoc(collection(firestore, "users"), {
-          email: email,
-          uid: authUser.user.uid,
-        })
-      )
-      .finally(() => navigate("/"))
-      .catch((err) => alert(err.message));
   };
 
   return (

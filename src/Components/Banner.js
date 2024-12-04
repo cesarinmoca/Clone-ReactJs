@@ -39,31 +39,30 @@ const Banner = () => {
 
   return (
     <div
-      class={classes.banner}
+      className={classes.banner}
       style={{
         backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
       }}
     >
+      <div className={classes.overlay}></div>
       <div className={classes.content}>
-        <Typography variant="h2" component="h1">
+        <Typography variant="h2" component="h1" className={classes.title}>
           {movie?.title || movie?.name || movie?.original_name}
         </Typography>
         <div className={classes.buttons}>
           <Button
             onClick={() => navigate(`/about/${movie?.id}`, { state: movie })}
+            className={classes.playButton}
           >
             Play
           </Button>
-          <Button onClick={() => addToMyList()}>My List</Button>
+          <Button onClick={() => addToMyList()} className={classes.listButton}>
+            My List
+          </Button>
         </div>
-        <Typography
-          style={{ wordWrap: "break-word" }}
-          variant="h6"
-          className={classes.descripcion}
-        >
+        <Typography variant="h6" className={classes.description}>
           {truncate(movie?.overview, 160)}
         </Typography>
-        <div className={classes.fadebottom}></div>
       </div>
     </div>
   );
@@ -71,52 +70,77 @@ const Banner = () => {
 
 const useStyles = makeStyles((theme) => ({
   banner: {
-    height: "440px",
+    height: "450px",
     position: "relative",
-    objectFit: "contain",
     backgroundSize: "cover",
     backgroundPosition: "center",
     color: "#ffffff",
+    transition: "all 0.3s ease",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end", // Ensures content stays at the bottom
+    "&:hover $overlay": {
+      opacity: 1,
+    },
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "rgba(0, 0, 0, 0.6)",
+    opacity: 0,
+    transition: "all 0.3s ease",
+    zIndex: 1,
   },
   content: {
+    position: "relative",
+    zIndex: 2,
     marginLeft: theme.spacing(4),
-    paddingTop: theme.spacing(16),
-    "& h2": {
-      fontWeight: 800,
-      paddingBottom: theme.spacing(3),
-    },
+    paddingTop: theme.spacing(2),
+    maxWidth: "600px",
+    paddingBottom: theme.spacing(3),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end", // Ensures that the description stays at the bottom
   },
-  descripcion: {
-    marginTop: theme.spacing(5),
-    width: "45rem",
-    lineHeight: "1.3",
-    maxWidth: "380px",
-    height: "80px",
+  title: {
+    fontWeight: 900,
+    fontSize: "3rem",
+    paddingBottom: theme.spacing(3),
+    textShadow: "2px 2px 8px rgba(0, 0, 0, 0.7)",
   },
   buttons: {
-    "& button": {
-      cursor: "pointer",
-      color: "#fff",
-      fontWeight: 700,
-      borderRadious: "5px",
-      padding: theme.spacing(1, 4, 1, 4),
-      marginRight: "1rem",
-      backgroundColor: "rgba(51,51,51,0.5)",
+    display: "flex",
+    gap: "1rem",
+    marginBottom: theme.spacing(3),
+  },
+  playButton: {
+    fontWeight: 700,
+    padding: theme.spacing(1, 4),
+    backgroundColor: "rgba(255, 0, 0, 0.8)",
+    "&:hover": {
+      backgroundColor: "#e60000",
     },
-    "& button:hover": {
-      color: "#000",
+  },
+  listButton: {
+    fontWeight: 700,
+    padding: theme.spacing(1, 4),
+    backgroundColor: "rgba(51, 51, 51, 0.5)",
+    "&:hover": {
       backgroundColor: "#e6e6e6",
     },
   },
-  fadebottom: {
-    position: "absolute",
-    top: "30vh",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 99,
-    backgroundImage:
-      "linear-gradient(180deg, transparent, rgba(37, 37, 37, 0.61), #111)",
+  description: {
+    fontSize: "1.1rem",
+    lineHeight: "1.6",
+    width: "75%",
+    maxWidth: "500px",
+    textShadow: "1px 1px 5px rgba(0, 0, 0, 0.7)",
+    overflow: "hidden", // Prevents overflowing
+    textOverflow: "ellipsis", // Adds ellipsis if the text is too long
+    whiteSpace: "nowrap", // Prevents text from wrapping
   },
 }));
 

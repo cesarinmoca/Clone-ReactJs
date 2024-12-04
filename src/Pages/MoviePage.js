@@ -1,27 +1,19 @@
-import React, { useState } from "react";
-import { useLocation, useParams } from "react-router";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { makeStyles } from "@mui/styles";
 import { Button, Typography } from "@mui/material";
-import axios from "axios";
-import { useEffect } from "react";
 import YouTube from "react-youtube";
 import Rows from "../Components/Rows";
-import requests from "../Request";
+import axios from "axios";
 
 const MoviePage = () => {
   const classes = useStyles();
   const { state: movie } = useLocation();
-  console.log("MOVIEEEEEEEEEEE:::::::::::", movie);
+  const [trailer, setTrailer] = useState(null);
+  const [playing, setPlaying] = useState(false);
 
   const API_URL = "https://api.themoviedb.org/3";
   const API_KEY = "4f5f43495afcc67e9553f6c684a82f84";
-  // endpoint para las imagenes
-
-  // variables de estado
-
-  //const [selectedMovie, setSelectedMovie] = useState({})
-  const [trailer, setTrailer] = useState(null);
-  const [playing, setPlaying] = useState(false);
 
   const fetchMovie = async () => {
     const { data } = await axios.get(`${API_URL}/movie/${movie.id}`, {
@@ -37,14 +29,11 @@ const MoviePage = () => {
       );
       setTrailer(trailer ? trailer : data.videos.results[0]);
     }
-    //return data
   };
 
   useEffect(() => {
     fetchMovie();
-  }, []);
-
-  console.log(movie.id);
+  }, [movie]);
 
   const truncate = (string, n) =>
     string?.length > n ? `${string.substr(0, n - 1)}...` : string;
@@ -52,11 +41,12 @@ const MoviePage = () => {
   return (
     <>
       <div
-        class={classes.banner}
+        className={classes.banner}
         style={{
           backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
         }}
       >
+        <div className={classes.overlay}></div>
         <div className={classes.content}>
           <Typography variant="h2" component="h1">
             {movie?.title || movie?.name || movie?.original_name}
@@ -67,7 +57,6 @@ const MoviePage = () => {
                 {playing ? "Stop playing" : "Show trailer"}
               </Button>
             )}
-
             <Button>My List</Button>
           </div>
           <Typography
@@ -77,11 +66,11 @@ const MoviePage = () => {
           >
             {truncate(movie?.overview, 160)}
           </Typography>
-          <div className={classes.fadebottom}></div>
         </div>
       </div>
+
       <main>
-        {movie ? (
+        {movie && (
           <div
             className="viewtrailer"
             style={{
@@ -91,75 +80,74 @@ const MoviePage = () => {
             }}
           >
             {playing ? (
-              <>
-                <YouTube
-                  videoId={trailer.key}
-                  className="reproductor container"
-                  containerClassName={"youtube-container amru"}
-                  style={{
-                    width: "50%",
-                    height: "500px",
-                  }}
-                  opts={{
-                    width: "100%",
-                    height: "100%",
-                    playerVars: {
-                      autoplay: 1,
-                      controls: 0,
-                      cc_load_policy: 0,
-                      fs: 0,
-                      iv_load_policy: 0,
-                      modestbranding: 0,
-                      rel: 0,
-                      showinfo: 0,
-                    },
-                  }}
-                />
-              </>
+              <YouTube
+                videoId={trailer.key}
+                className="reproductor container"
+                style={{
+                  width: "100%",
+                  height: "500px",
+                }}
+                opts={{
+                  autoplay: 1,
+                  controls: 0,
+                  cc_load_policy: 0,
+                  fs: 0,
+                  iv_load_policy: 0,
+                  modestbranding: 0,
+                  rel: 0,
+                  showinfo: 0,
+                }}
+              />
             ) : (
-              <div className="container">
-                <div className="">
-                  {trailer ? null : (
-                    <h1
-                      style={{
-                        color: "white",
-                      }}
-                    >
-                      "Una disculpa, No se pudo encontrar un trailer"
-                    </h1>
-                  )}
-                </div>
+              <div>
+                {trailer ? null : (
+                  <h1 style={{ color: "white" }}>
+                    "Una disculpa, No se pudo encontrar un trailer"
+                  </h1>
+                )}
               </div>
             )}
           </div>
-        ) : null}
+        )}
       </main>
+
       <div>
-        {/* Mostrar fila de recomendacion */}
-        <Rows title='Recommendations' fetchUrl={`https://api.themoviedb.org/3/movie/${movie.id}"/recommendations?api_key=52abd33f37ed4adae2df8ac3891c2bbb`}/>
+        <Rows
+          title="Recommendations"
+          fetchUrl={`https://api.themoviedb.org/3/movie/${movie.id}/recommendations?api_key=${API_KEY}`}
+        />
       </div>
     </>
   );
 };
 
-export default MoviePage;
-
 const useStyles = makeStyles((theme) => ({
   banner: {
     height: "440px",
     position: "relative",
-    objectFit: "contain",
     backgroundSize: "cover",
     backgroundPosition: "center",
     color: "#ffffff",
   },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "rgba(0, 0, 0, 0.6)",
+    zIndex: 1,
+  },
   content: {
+    position: "relative",
+    zIndex: 2,
     marginLeft: theme.spacing(4),
     paddingTop: theme.spacing(16),
-    "& h2": {
-      fontWeight: 800,
-      paddingBottom: theme.spacing(3),
-    },
+    paddingBottom: theme.spacing(3),
+  },
+  title: {
+    fontWeight: 800,
+    paddingBottom: theme.spacing(3),
   },
   descripcion: {
     marginTop: theme.spacing(5),
@@ -169,13 +157,15 @@ const useStyles = makeStyles((theme) => ({
     height: "80px",
   },
   buttons: {
+    display: "flex",
+    gap: "1rem",
+    marginBottom: theme.spacing(3),
     "& button": {
       cursor: "pointer",
       color: "#fff",
       fontWeight: 700,
-      borderRadious: "5px",
-      padding: theme.spacing(1, 4, 1, 4),
-      marginRight: "1rem",
+      borderRadius: "5px",
+      padding: theme.spacing(1, 4),
       backgroundColor: "rgba(51,51,51,0.5)",
     },
     "& button:hover": {
@@ -183,14 +173,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#e6e6e6",
     },
   },
-  fadebottom: {
-    position: "absolute",
-    top: "30vh",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 99,
-    backgroundImage:
-      "linear-gradient(180deg, transparent, rgba(37, 37, 37, 0.61), #111)",
-  },
 }));
+
+export default MoviePage;

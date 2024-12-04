@@ -1,36 +1,36 @@
-import { AppBar, Avatar, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Avatar,
+  IconButton,
+  Toolbar,
+  Box,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router";
 import styled from "@emotion/styled";
 import InputBase from "@mui/material/InputBase";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import logo from "../Images/Logo.png";
 import instance from "../axios";
-import requests from "../Request";
 import CustomSearchItem from "./CustomSearchItem";
+import logoOwl from "../Images/owl.png";  // Ruta de tu logo de búho
 
 // get window width
 const width = window.innerWidth;
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: "#F3F3F3",
+  borderRadius: "20px",
+  backgroundColor: "rgba(0, 0, 0, 0.8)",  // Fondo negro para la barra de búsqueda
   "&:hover": {
-    backgroundColor: "#F3F3F3",
+    backgroundColor: "rgba(0, 0, 0, 0.9)",  // Fondo ligeramente más oscuro al pasar el mouse
   },
   marginRight: theme.spacing(2),
-  marginLeft: 40,
-
+  marginLeft: theme.spacing(3),
+  width: "auto",
   [theme.breakpoints.up("sm")]: {
-    width: "500px",
-    marginRight: "auto",
-  },
-  [theme.breakpoints.up("md")]: {
-    width: "100%",
-    marginRight: 40,
+    marginLeft: theme.spacing(4),
+    width: "400px",
   },
 }));
 
@@ -42,21 +42,18 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  color: "#fff",  // Icono de búsqueda en blanco
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
+  width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
-
-    [theme.breakpoints.up("md")]: {
-      width: "1400px",
-    },
-    [theme.breakpoints.up("sm")]: {
-      width: "600px",
-    },
+    width: "100%",
+    color: "#fff",  // El texto dentro de la barra de búsqueda será blanco
   },
 }));
 
@@ -101,37 +98,43 @@ const Header = () => {
   };
 
   return (
-    <AppBar elevation={0} class={`${"barra"} ${show && "transparent"}`}>
+    <AppBar
+      position="fixed"
+      className={`${classes.header} ${show && classes.transparent}`}
+    >
       <Toolbar className={classes.toolbar}>
-        <IconButton onClick={() => navigate("/")}>
-          {/* <img src={logo} alt="logo" className={classes.logo}/> */}
-          <Typography
-            variant="h4"
-            style={{
-              color: "white",
-            }}
-          >
-            CyberStream
-          </Typography>
-        </IconButton>
+        {/* Logo */}
+        <Box display="flex" alignItems="center">
+          <IconButton onClick={() => navigate("/home")}>
+            <img
+              src={logoOwl}  // Ruta de tu logo de búho
+              alt="Logo"
+              className={classes.logo}
+            />
+          </IconButton>
+        </Box>
+
+        {/* Search Bar */}
         <Search>
           <SearchIconWrapper>
-            <SearchIcon color="black" />
+            <SearchIcon />
           </SearchIconWrapper>
           <StyledInputBase
-            placeholder="Busqueda..."
-            inputProps={{
-              "aria-label": "search",
-            }}
+            placeholder="Search movies..."
+            inputProps={{ "aria-label": "search" }}
             onChange={(e) => handleSearch(e.target.value)}
           />
         </Search>
+
+        {/* Profile */}
         <Avatar
-          variant="square"
-          style={{ cursor: "pointer" }}
+          variant="circle"
+          className={classes.avatar}
           onClick={() => navigate("/profile")}
         />
       </Toolbar>
+
+      {/* Search Results */}
       {data?.length > 0 &&
         data?.map((movie) => (
           <CustomSearchItem
@@ -148,15 +151,29 @@ const Header = () => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  header: {},
+  header: {
+    backgroundColor: "#000 !important",  // Fondo negro para el header
+    transition: "background-color 0.3s ease",
+  },
+  transparent: {
+    backgroundColor: "rgba(0, 0, 0, 0.8) !important",  // Fondo negro semitransparente cuando se hace scroll
+  },
   logo: {
-    width: "100px",
+    width: "60px",  // Ajusta el tamaño del logo
     cursor: "pointer",
+    filter: "invert(1)",  // Invertir el color del logo a blanco
   },
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  avatar: {
+    backgroundColor: "#ff3d00",  // Color de fondo del avatar
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#ff5733",  // Color cuando pasa el cursor
+    },
   },
 }));
 

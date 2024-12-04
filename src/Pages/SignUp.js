@@ -15,82 +15,122 @@ const SignUp = () => {
   const signIn = (e) => {
     e.preventDefault();
     navigate("/home");
-  }; //
+  };
 
   const register = async (e) => {
     e.preventDefault();
   };
 
   return (
-    <>
-      <div className={classes.contenedor}>
-        <img src={owl} alt="logo" className={classes.logo} />
-        <Typography variant="h5" align="left">
-          Inicio de sesion
-        </Typography>
-        <form className={classes.form}>
-          <NetflixInput
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            placeholder="Correo electronico"
-            className={classes.email}
-          />
-          <NetflixInput
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder="Contraseña"
-            className={classes.password}
-          />
-          <NetflixButton
-            onClick={signIn}
-            style={{ marginBottom: "8px" }}
-            type="submit"
-            radius="true"
-          >
-            Acceder
-          </NetflixButton>
-          <Typography variant="subtitle2">¿Nuevo en CyberStream?</Typography>
-          <Typography variant="subtitle2">
-            <span className={classes.signupLink} onClick={register}>
-              Registrate ahora{" "}
-            </span>
+    <div className={classes.background}>
+      <div className={classes.overlay}>
+        <div className={classes.contenedor}>
+          <img src={owl} alt="logo" className={classes.logo} />
+          <Typography variant="h5" align="left" className={classes.title}>
+            Inicio de sesión
           </Typography>
-        </form>
+          <form className={classes.form}>
+            <NetflixInput
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Correo electrónico"
+              className={classes.email}
+            />
+            <NetflixInput
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="Contraseña"
+              className={classes.password}
+            />
+            <NetflixButton
+              onClick={signIn}
+              style={{ marginBottom: "8px" }}
+              type="submit"
+              radius="true"
+            >
+              Acceder
+            </NetflixButton>
+            <Typography variant="subtitle2" className={classes.subtitle}>
+              ¿Nuevo Usuario?
+            </Typography>
+            <Typography variant="subtitle2" className={classes.subtitle}>
+              <span className={classes.signupLink} onClick={register}>
+                Regístrate ahora
+              </span>
+            </Typography>
+          </form>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
+  background: {
+    width: "100vw",
+    height: "100vh",
+    backgroundImage: "url('https://cdn.pixabay.com/photo/2016/10/27/23/52/cinema-1777190_1280.jpg')", // Nueva imagen de fondo
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.7)", // Para mejorar el contraste
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   contenedor: {
-    maxWidth: "350px",
-    width: "23rem",
-    height: "30rem",
-    background: "rgba(0,0,0,0.65)",
+    maxWidth: "400px",
+    width: "90%",
+    padding: "2rem",
+    background: "rgba(0, 0, 0, 0.85)",
+    borderRadius: "15px",
+    boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.5)",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center",
-    borderRadius: "10px",
-  },
-  form: {
-    width: "80%",
+    textAlign: "center",
+    color: "#fff",
   },
   logo: {
-    height: "5rem",
-    width: "5rem",
+    height: "80px",
+    marginBottom: "1rem",
+    filter: "brightness(0) invert(1)", // Cambia el logo a blanco
+  },
+  title: {
+    fontWeight: "bold",
+    marginBottom: "1rem",
+  },
+  form: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   email: {
-    marginBottom: theme.spacing(2),
+    marginBottom: "1.5rem",
+    width: "100%",
   },
   password: {
-    marginBottom: theme.spacing(4),
+    marginBottom: "2rem",
+    width: "100%",
+  },
+  subtitle: {
+    color: "#b0b0b0",
+    marginTop: "1rem",
   },
   signupLink: {
-    color: "#fff",
     cursor: "pointer",
+    color: "#ffffff",
+    fontWeight: "bold",
     "&:hover": {
       textDecoration: "underline",
     },

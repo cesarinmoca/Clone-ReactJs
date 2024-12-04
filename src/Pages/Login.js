@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 // import logo from "../Images/Logo.png";
 // import HeroBanner from "../Images/HeroBanner.png";
 import forestWP from "../Images/forestWP.jpg";
+import HeroBanner from "../Images/HeroBanner.png"
 import { Typography } from "@mui/material";
 import { NetflixButton, NetflixInput } from "../Styled/styledcomponents";
 import SignUp from "./SignUp";
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   contenedor: {
     position: "relative",
     height: "100vh",
-    backgroundImage: `url(${forestWP})`,
+    backgroundImage: `url(${HeroBanner})`,
     objectFit: "contain",
     backgroundSize: "cover",
     backgroundPosition: "center",

@@ -15,7 +15,7 @@ const SignUp = () => {
   const signIn = (e) => {
     e.preventDefault();
     navigate("/home");
-  };
+  }; //
 
   const register = async (e) => {
     e.preventDefault();
